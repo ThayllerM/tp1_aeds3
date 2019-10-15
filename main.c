@@ -28,7 +28,7 @@ int main (int argc, char *argv[]) {
     }
 
     int **matriz_instancias = abri_arq("entrada.txt");
-
+    //comentario
 
     return 0;
 }
