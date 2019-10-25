@@ -19,7 +19,7 @@ int** abri_arq(char *nome){
             matriz_instancias[i][1] = k; //k - numero de planetas a serem conquistados na segunda coluna da matriz ao lado da qtd de planetas.
 
             for(int j = 0; j < n+1; j++){
-                fscanf(arq, "%d", &matriz_instancias[i][j+2]);
+                fscanf(arq, "%d", &matriz_instancias[i][j+2]); //looping para pegar as distancias dos caminhos
             }
         }
 
