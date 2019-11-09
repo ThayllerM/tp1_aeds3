@@ -2,7 +2,7 @@
 
 int main (int argc, char *argv[]) {
     int opt;
-    int algoritmo_escolhido;
+    int algoritmo_escolhido, i;
 
     while((opt = getopt(argc, argv, "a:")) > 0) {
         switch (opt) {
@@ -18,7 +18,7 @@ int main (int argc, char *argv[]) {
                 }
                 else{
                     fprintf(stderr, "Opcao invalida\n");
-                    return -1;   
+                    return -1;
                 }
                 break;
             default:
@@ -28,7 +28,21 @@ int main (int argc, char *argv[]) {
     }
 
     int **matriz_instancias = abri_arq("entrada.txt");
-    //comentario
+    algoritmo_escolhido = 1;
+    
+    switch (algoritmo_escolhido) {
+        case 1:
+            for (i = 0; i < instancias; i++) {
+              forca_bruta(matriz_instancias[i][0], matriz_instancias[i][1], matriz_instancias[i]);
+            }
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+    }
 
     return 0;
 }

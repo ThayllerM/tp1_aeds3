@@ -2,7 +2,7 @@ clean:	tp
 	rm *.o
 
 tp:	main.o	funcoes.o
-	gcc main.o funcoes.o -o tp
+	gcc main.o funcoes.o -o tp -lm
 
 main.o:	main.c
 	gcc main.c -c
