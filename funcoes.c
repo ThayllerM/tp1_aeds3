@@ -49,17 +49,17 @@ void converte_bin (int num, int *vet_bin) {
 void forca_bruta(int n, int k, int *linha_instancia){
   int cont, i, j, trigger;
   int vet_bin[500] = {0};
-  int max = pow(2, n);
+  int max = pow(2, n);   //conta ate 2 elevado a n
 
   for (i = 0; i < max; i++) {
-    converte_bin(i, vet_bin);
+    converte_bin(i, vet_bin); //converte todos os i numeros para binario
     cont = 0;
-    for (j = 0, trigger = 0; j < 500 && trigger == 0; j++) {
-      if (vet_bin[j] == 1) {
-        cont++;
+    for (j = 0, trigger = 0; j < 500 && trigger == 0; j++) { //conta quantos 1 existe no codigo binario.
+      if (vet_bin[j] == 1) { 
+        cont++;             //incrementa o contador a cada 1 encontrado.
       }
       if (cont > k) {
-        trigger = 1;
+        trigger = 1;        //trigger = 1 funciona como condição de parada.
       }
     }
 
