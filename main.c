@@ -28,11 +28,12 @@ int main (int argc, char *argv[]) {
     }
 
     int **matriz_instancias = abri_arq("entrada.txt");
-    algoritmo_escolhido = 1;
-    
+    algoritmo_escolhido = 2;
+
     switch (algoritmo_escolhido) {
         case 1:
             for (i = 0; i < instancias; i++) {
+              printf("Instancia: %d\n", i);
               forca_bruta(matriz_instancias[i][0], matriz_instancias[i][1], matriz_instancias[i]);
             }
             break;

@@ -46,6 +46,28 @@ void converte_bin (int num, int *vet_bin) {
 	}
 }
 
+int testa (int vet_bin[], int *linha_instancia) { // retornar o maior subcaminho da permutacao recebida
+  int n = linha_instancia[0]; // total de planetas da instancia
+  int k = linha_instancia[1]; // planetas a conquistar
+  int max = 0, aux = linha_instancia[2];
+
+  for (int i = 0; i < n; i++) {
+    if (vet_bin[i] == 0) {
+      aux += linha_instancia[i + 3];
+    }
+    else if (vet_bin[i] == 1) {
+      if (max < aux) {
+        max = aux;
+      }
+      aux = linha_instancia[i + 3];
+    }
+  }
+  if (max < aux) {
+    max = aux;
+  }
+  return max;
+}
+
 void forca_bruta(int n, int k, int *linha_instancia){
   int cont, i, j, trigger;
   int vet_bin[500] = {0};
@@ -64,18 +86,19 @@ void forca_bruta(int n, int k, int *linha_instancia){
     }
 
     if (cont == k) {
-      //teste
+      aux = testa(vet_bin, linha_instancia);
+      if (aux < min_max) {
+        min_max = aux;
+      }
     }
   }
-
+  printf("Menor maior subcaminho possivel: %d\n", min_max);
 }
 
 void guloso(){
 
-
 }
 
 void Prog_Dinamica(){
-
 
 }
