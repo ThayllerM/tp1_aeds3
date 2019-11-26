@@ -99,8 +99,67 @@ void forca_bruta(int n, int k, int *linha_instancia){
   printf("Menor maior subcaminho possivel: %d\n", min_max);
 }
 
-void guloso(){
+int guloso(int inicio, int fim, int k, int *linha_instancia, int *vet_bin){
+  if (k == 0) { // se ja conquistou os planetas necessarios
+    printf("Menor maior subcaminho possivel: %d\n", testa(vet_bin, linha_instancia));
+    return 2;
+  }
+  else if (inicio < fim) { // se os planetas nao sao nem o primeiro nem o ultimo
+    int i, max = 0, indice;
+    int soma1 = 0, soma2 = 0;
+    int retorno;
 
+    //achar um pivo inicial, que vai buscar o maior caminho da instancia atual
+
+    for (i = inicio; i < fim; i++) {
+      if (linha_instancia[i] > max) {
+        max = linha_instancia[i];
+        indice = i;
+      }
+    }
+
+    vet_bin[indice - 2] = 1;
+
+    //descobrir se o subcaminho a esquerda do pivo e maior que o da direita
+
+    for (i = inicio; i < indice; i++) {
+      soma1 += linha_instancia[i];
+    }
+
+    for (i = indice + 1; i < fim; i++) {
+      soma2 += linha_instancia[i];
+    }
+
+    if (soma1 > soma2) { // se a parcela a esquerda conter a maior soma de caminhos
+      retorno = guloso(inicio, indice - 1, --k, linha_instancia, vet_bin);
+      if (retorno == 2) { // caso ja tenha conquistado os planetas necessaios
+        return 2;
+      }
+      else if (retorno == 1) { // caso o algoritmo precise conquistar mais planetas na parcela da direita
+        retorno = guloso(indice + 1, fim, --k, linha_instancia, vet_bin);
+        if (retorno == 2) { // caso ja tenha conquistado os planetas necessaios
+          return 2;
+        }
+      }
+    }
+    else { // se a parcela a direita conter a maior soma de caminhos
+      retorno = guloso(indice + 1, fim, --k, linha_instancia, vet_bin);
+      if (retorno == 2) { // caso ja tenha conquistado os planetas necessaios
+        return 2;
+      }
+      else if (retorno == 1) {  // caso o algoritmo precise conquistar mais planetas na parcela da esquerda
+        retorno = guloso(inicio, indice - 1, --k, linha_instancia, vet_bin);
+        if (retorno == 2) { // caso ja tenha conquistado os planetas necessaios
+          return 2;
+        }
+      }
+    }
+    return 0;
+  }
+  else { // caso o conjunto de planetas analizados tenha apenas o primeiro ou o ultimo planeta
+    vet_bin[inicio - 2] = 1;
+    return 1;
+  }
 }
 
 void Prog_Dinamica(){
