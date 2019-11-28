@@ -1,6 +1,7 @@
 #include "tp.h"
 
 int main (int argc, char *argv[]) {
+    system("clear");
     int opt = getopt(argc, argv, "a:");
     int algoritmo_escolhido, i;
 
@@ -28,6 +29,11 @@ int main (int argc, char *argv[]) {
     int **matriz_instancias = abri_arq("entrada.txt");
     int vet_bin[500] = {0};
 
+    gettimeofday(&start ,NULL);
+	  getrusage(RUSAGE_SELF, &r_usage);
+	  user_start = r_usage.ru_utime;
+	  sys_start = r_usage.ru_stime;
+
     switch (algoritmo_escolhido) {
         case 1:
             for (i = 0; i < instancias; i++) {
@@ -44,10 +50,12 @@ int main (int argc, char *argv[]) {
         case 3:
             for (i = 0; i < instancias; i++) {
               printf("Instancia PD: %d\n", i);
-              Prog_Dinamica(2, matriz_instancias[i][0] + 2, matriz_instancias[i][1], matriz_instancias[i], vet_bin);
+              Prog_Dinamica(matriz_instancias[i][0], matriz_instancias[i][1], matriz_instancias[i]);
             }
             break;
     }
+
+    fim_do_programa(1, 1, 1);
 
     return 0;
 }

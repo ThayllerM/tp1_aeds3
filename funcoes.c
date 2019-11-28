@@ -1,5 +1,37 @@
 #include "tp.h"
 
+void imprimir_usuario (struct timeval start, struct timeval tend){
+	double startsec = (((double)start.tv_sec) + ((double)start.tv_usec/1000000));
+	double endsec = (((double)tend.tv_sec) + ((double)tend.tv_usec/1000000));
+	double process = (endsec - startsec);
+
+	printf ("\nTempo de Leitura: %.5fseg.\nTempo de Processamento: %.5fseg.\n", startsec, process);
+}
+
+void imprimir_sistema (struct timeval start, struct timeval tend){
+	double sistema = (((double)tend.tv_sec) + ((double)tend.tv_usec/1000000)) - (((double)start.tv_sec) + ((double)start.tv_usec/1000000));
+	printf ("Tempo de Sistema: %.5fseg.\n", sistema);
+}
+
+void fim_do_programa(int sys_print, int user_print, int total_print) {
+	getrusage(RUSAGE_SELF, &r_usage);
+	user_end = r_usage.ru_utime;
+	sys_end = r_usage.ru_stime;
+
+	if (user_print == 1) {
+		imprimir_usuario(user_start, user_end);
+	}
+	if (sys_print == 1) {
+		imprimir_sistema(sys_start, sys_end);
+	}
+
+	gettimeofday(&end ,NULL);
+	if (total_print == 1) {
+		double total = (((double)end.tv_sec) + ((double)end.tv_usec/1000000)) - (((double)start.tv_sec) + ((double)start.tv_usec/1000000));
+		printf ("\nTempo Total: %.5fseg.\n", total);
+	}
+}
+
 int** abri_arq(char *nome){
     int n, k;
     FILE *arq;
@@ -162,6 +194,39 @@ int guloso(int inicio, int fim, int k, int *linha_instancia, int *vet_bin){
   }
 }
 
-void Prog_Dinamica(){
+void Prog_Dinamica(int n, int k, int *linha_instancia){
+  int vet_bin[500] = {0};
+  int i, j; // contadores
+  int min_max = INFINITY;
+  int aux1, indice;
 
+  for (i = 0; i < n; i++) {
+    vet_bin[i] = 1;
+  }
+
+  //primeiramente, deve-se montar todas as possibilidades de "deixar de conquistar um planeta"
+
+  for (i = 0; i < n - k; i++) { // numero de planetas a deixar de conquistar
+    for (j = 0; j < n; j++) {
+      if (vet_bin[j] != 0) { // ignorar planetas que ja foram retirados da melhor possibilidade
+        // deixar de conquistar o planeta atual focado
+        vet_bin[j] = 0;
+
+        // descobrir o maior subcaminho da possibilidade criada
+        aux1 = testa(vet_bin, linha_instancia);
+
+        if (aux1 < min_max) { // se a nova combinacao resultar em um subcaminho maximo menor do que o obtido anteriormente
+          // salva esse indice
+          min_max = aux1;
+          indice = j;
+        }
+        // desfazer o que foi feito para gerar uma nova possibilidade de "nao conquista"
+        vet_bin[j] = 1;
+      }
+    }
+    // nessa linha, ja se tem certeza de qual planeta e o melhor a se deixar de conquistar
+    vet_bin[indice] = 0;
+  }
+
+  printf("Menor maior subcaminho possivel: %d\n", testa(vet_bin, linha_instancia));
 }
